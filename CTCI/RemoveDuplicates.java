@@ -1,3 +1,6 @@
+/*
+@author - Sanket Mathur
+*/
 class RemoveDuplicates {
 	public static void main(String args[]) {
 		System.out.println(makeUnique("ababababaf"));

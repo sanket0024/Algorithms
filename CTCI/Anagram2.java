@@ -1,3 +1,6 @@
+/*
+@author - Sanket Mathur
+*/
 class Anagram2 {
 	public static void main(String args[]) {
 		System.out.println(isAnagram("abca", "aabc"));
