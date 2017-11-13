@@ -45,7 +45,7 @@ class CircularLinkedList {
 		}
 		/* 
 		4. At the last node, change the next attribute from head
-			to new node
+			to new node and new node's next to head  
 		*/
 		last.next = new LinkedListNode (d);
 		last.next.next = head;
