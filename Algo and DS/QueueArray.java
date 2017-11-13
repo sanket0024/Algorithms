@@ -1,24 +1,35 @@
-class Queue {
+class QueueArray {
 	int front = -1;
 	int rear = -1;
 	public void enqueue(int[] arr, int ele) {
-		if(rear == arr.length) {
-			System.out.println("Queue is full");
+		/*
+		Add to the queue
+		1. Check if queue is full?
+			YES: return queue is full. Overflow
+		else increment rear to the next empty space
+		and set element at the arr[rear]
+		*/
+		if(rear >= arr.length) {
+			System.out.println("Overflow");
+			return;
 		}
 		else {
 			if(front < 0)
 				front++;
 			rear++;
 			arr[rear] = ele;
-			for(int a: arr) {
-				System.out.print(a + " ");
-			}
-			System.out.println("\n");
 		}
 	}
+	/*
+	DELETE from queue
+	1. Check if queue is empty?
+	front<0 or front > rear
+		YES: return queue is empty: Underflow
+	else front++
+	*/
 	public void dequeue(int[] arr) {
 		if(front < 0 || front > rear) {
-			System.out.println("Queue is empty");
+			System.out.println("Underflow");
 		}
 		else {
 			System.out.println("Element dequeued is: " + arr[front]);
@@ -30,11 +41,11 @@ class Queue {
 			System.out.println("Queue is empty");
 		}
 		else {
-			System.out.println("Element peek is: " + arr[front]);
+			System.out.println("Element at front of the queue is: " + arr[front]);
 		}
 	}
 	public static void main(String[] args) {
-		Queue q = new Queue();
+		QueueArray q = new QueueArray();
 		int[] que = new int[100];
 		q.enqueue(que, 101);
 		q.enqueue(que, 102);
