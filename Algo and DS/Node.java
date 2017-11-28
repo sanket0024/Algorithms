@@ -6,4 +6,7 @@ class Node {
 		left = null;
 		right = null;
 	}
+	public void printNodeElement() {
+		System.out.print(this.data + " ");
+	}
 }
