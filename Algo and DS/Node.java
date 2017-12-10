@@ -9,4 +9,13 @@ class Node {
 	public void printNodeElement() {
 		System.out.print(this.data + " ");
 	}
+
+	public static int minValue(Node n) {
+		int min = n.data;
+		while(n.left != null) {
+			n = n.left;
+			min = n.data;
+		}
+		return min;
+	}
 }

@@ -42,6 +42,38 @@ class BST {
 		return root;
 	}
 
+	public Node remove(int element) {
+		/*
+		* 1. Check if the root is empty: return root
+		* 2. If the element is less than the root: call remove on the left sub tree
+		* 3. If the elemtnt is greater than the root: call remove on the right sub tree
+		* 4. Else root is the element: if right sub tree is null, return left sub tree
+		*    	else min of right sub tree will be the new root.
+		*		new_root.left = root.left
+		*		new_root.right = root.right
+		*/
+
+		if(root == null) {
+			return root;
+		}
+		else if(element < root.data) {
+			root.left = new BST(root.left).remove(element);
+		}
+		else if(element > root.data) {
+			root.right = new BST(root.right).remove(element);
+		}
+		else {
+			if(root.right == null) {
+				return root.left;
+			}
+			else {
+				root.data = Node.minValue(root.right);
+				root.right = new BST(root.right).remove(root.data);
+			}
+		}
+		return root;
+	}
+
 	//Inorder: Left Root Right
 	public static void inOrderPrint(Node root) {
 		if(root != null) {
@@ -81,11 +113,21 @@ class BST {
 		binTree.right.right = new Node(17);
 		binTree.right.left.left = new Node(12);
 		binTree.right.left.right = new Node(14);
+		System.out.println("***************\nINPUT TREE\n***************");
+		System.out.println("\nPre Order");
+		BST.preOrderPrint(binTree);
+		System.out.println("\nIn Order");
+		BST.inOrderPrint(binTree);
+		System.out.println("\nPost Order");
+		BST.postOrderPrint(binTree);
+		System.out.println();
 
 		Scanner scan = new Scanner(System.in);
-		System.out.print("Search or Insert?? ");
-		String str = scan.nextLine();
-		if(str.equalsIgnoreCase("Search")) {
+		System.out.println("\nSelect one number:");
+		System.out.println("1. Search \n2. Insert \n3. Remove\n");
+		int operation = scan.nextInt();
+		if(operation == 1) {
+			System.out.println("*************SEARCH***************");
 			System.out.print("Enter the number to search in the binary tree: ");
 			int element = scan.nextInt();
 			BST binSearchTree = new BST(binTree);
@@ -94,19 +136,43 @@ class BST {
 				System.out.println("Found: " + res.data);
 			else
 				System.out.println("Not found");
+			System.out.println("*************************************");
+		}
+		else if(operation == 2) {
+			System.out.println("*************INSERT***************");
+			System.out.print("Enter the number to insert in the binary tree: ");
+			boolean more = true;
+			while(more){
+				int element = scan.nextInt();
+				binTree = new BST(binTree).insert(element);
+				System.out.print("Add more? ");
+				String str = scan.nextLine();
+				String str1 = scan.nextLine();
+				if(str1.equalsIgnoreCase("N")) {
+					more = false;
+				}
+			}
+			System.out.println("\nPre Order");
+			BST.preOrderPrint(binTree);
+			System.out.println("\nIn Order");
+			BST.inOrderPrint(binTree);
+			System.out.println("\nPost Order");
+			BST.postOrderPrint(binTree);
+			System.out.println("\n****************************");
 		}
 		else {
-			System.out.print("Enter the number to insert in the binary tree: ");
+			System.out.println("*************REMOVE***************");
+			System.out.print("Enter the number to delete in the binary tree: ");
 			int element = scan.nextInt();
 			BST binSearchTree = new BST(binTree);
-			Node res = binSearchTree.insert(element);
-			System.out.println("Pre Order");
-			binSearchTree.preOrderPrint(res);
+			Node res = binSearchTree.remove(element);
+			System.out.println("\nPre Order");
+			BST.preOrderPrint(res);
 			System.out.println("\nIn Order");
-			binSearchTree.inOrderPrint(res);
+			BST.inOrderPrint(res);
 			System.out.println("\nPost Order");
-			binSearchTree.postOrderPrint(res);
-			System.out.println();
+			BST.postOrderPrint(res);
+			System.out.println("\n****************************");
 		}
 	}
 }
