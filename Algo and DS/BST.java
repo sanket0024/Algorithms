@@ -1,9 +1,11 @@
 import java.util.Scanner;
+import java.util.Queue;
+import java.util.LinkedList;
 class BST {
 
-	Node root;
+	TreeNode root;
 	//constructor
-	private BST(Node root) {
+	private BST(TreeNode root) {
 		this.root = root;
 	}
 	/*
@@ -11,7 +13,7 @@ class BST {
 	*    left subtree and all the larger elements will be present
 	*    in the right sub tree of the root node
 	*/
-	public Node search(int element) {
+	public TreeNode search(int element) {
 		// if root is null or it is the element then return root
 		if(root == null || root.data == element)
 			return root;
@@ -23,10 +25,10 @@ class BST {
 			return new BST(root.right).search(element);
 	}
 
-	public Node insert(int element) {
+	public TreeNode insert(int element) {
 		//if no element, then return the new node with the given element
 		if(root == null) {
-			return new Node(element);
+			return new TreeNode(element);
 		}
 		//if element already exists then return the same tree
 		if(this.search(element) != null) {
@@ -42,7 +44,7 @@ class BST {
 		return root;
 	}
 
-	public Node remove(int element) {
+	public TreeNode remove(int element) {
 		/*
 		* 1. Check if the root is empty: return root
 		* 2. If the element is less than the root: call remove on the left sub tree
@@ -67,7 +69,7 @@ class BST {
 				return root.left;
 			}
 			else {
-				root.data = Node.minValue(root.right);
+				root.data = TreeNode.minValue(root.right);
 				root.right = new BST(root.right).remove(root.data);
 			}
 		}
@@ -75,7 +77,7 @@ class BST {
 	}
 
 	//Inorder: Left Root Right
-	public static void inOrderPrint(Node root) {
+	public static void inOrderPrint(TreeNode root) {
 		if(root != null) {
 			BST.inOrderPrint(root.left);
 			System.out.print(root.data + "  ");
@@ -84,7 +86,7 @@ class BST {
 	}
 
 	// PreOrder: Root Left Right
-	public static void preOrderPrint(Node root) {
+	public static void preOrderPrint(TreeNode root) {
 		if(root != null) {
 			System.out.print(root.data + "  ");
 			BST.preOrderPrint(root.left);
@@ -93,7 +95,7 @@ class BST {
 	}
 
 	//PostOrder: Left Right Root
-	public static void postOrderPrint(Node root) {
+	public static void postOrderPrint(TreeNode root) {
 		if(root != null) {
 			BST.postOrderPrint(root.left);
 			BST.postOrderPrint(root.right);
@@ -101,18 +103,34 @@ class BST {
 		}
 	}
 
+	//LevelOrder
+	public static void levelOrderPrint(TreeNode root) {
+		if(root != null) {
+			Queue<TreeNode> que = new LinkedList<TreeNode>();
+			que.add(root);
+			while(que.peek() != null) {
+				TreeNode tn = que.poll();
+				System.out.print(tn.data + "  ");
+				if(tn.left != null)
+					que.add(tn.left);
+				if(tn.right != null)
+					que.add(tn.right);
+			}
+		}
+	}
+
 	public static void main(String[] args) {
-		Node binTree = new Node(10);
-		binTree.left = new Node(5);
-		binTree.left.left = new Node(3);
-		binTree.left.right = new Node(6);
-		binTree.left.left.left = new Node(1);
-		binTree.left.left.right = new Node(4);
-		binTree.right = new Node(15);
-		binTree.right.left = new Node(13);
-		binTree.right.right = new Node(17);
-		binTree.right.left.left = new Node(12);
-		binTree.right.left.right = new Node(14);
+		TreeNode binTree = new TreeNode(10);
+		binTree.left = new TreeNode(5);
+		binTree.left.left = new TreeNode(3);
+		binTree.left.right = new TreeNode(6);
+		binTree.left.left.left = new TreeNode(1);
+		binTree.left.left.right = new TreeNode(4);
+		binTree.right = new TreeNode(15);
+		binTree.right.left = new TreeNode(13);
+		binTree.right.right = new TreeNode(17);
+		binTree.right.left.left = new TreeNode(12);
+		binTree.right.left.right = new TreeNode(14);
 		System.out.println("***************\nINPUT TREE\n***************");
 		System.out.println("\nPre Order");
 		BST.preOrderPrint(binTree);
@@ -120,6 +138,8 @@ class BST {
 		BST.inOrderPrint(binTree);
 		System.out.println("\nPost Order");
 		BST.postOrderPrint(binTree);
+		System.out.println("\nLevel Order");
+		BST.levelOrderPrint(binTree);
 		System.out.println();
 
 		Scanner scan = new Scanner(System.in);
@@ -131,7 +151,7 @@ class BST {
 			System.out.print("Enter the number to search in the binary tree: ");
 			int element = scan.nextInt();
 			BST binSearchTree = new BST(binTree);
-			Node res = binSearchTree.search(element);
+			TreeNode res = binSearchTree.search(element);
 			if(res != null)
 				System.out.println("Found: " + res.data);
 			else
@@ -158,6 +178,8 @@ class BST {
 			BST.inOrderPrint(binTree);
 			System.out.println("\nPost Order");
 			BST.postOrderPrint(binTree);
+			System.out.println("\nLevel Order");
+			BST.levelOrderPrint(binTree);
 			System.out.println("\n****************************");
 		}
 		else {
@@ -165,13 +187,15 @@ class BST {
 			System.out.print("Enter the number to delete in the binary tree: ");
 			int element = scan.nextInt();
 			BST binSearchTree = new BST(binTree);
-			Node res = binSearchTree.remove(element);
+			TreeNode res = binSearchTree.remove(element);
 			System.out.println("\nPre Order");
 			BST.preOrderPrint(res);
 			System.out.println("\nIn Order");
 			BST.inOrderPrint(res);
 			System.out.println("\nPost Order");
 			BST.postOrderPrint(res);
+			System.out.println("\nLevel Order");
+			BST.levelOrderPrint(binTree);
 			System.out.println("\n****************************");
 		}
 	}

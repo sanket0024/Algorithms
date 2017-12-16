@@ -3,6 +3,5 @@ class NodeSinglyLinkedList {
 	int next;
 	NodeSinglyLinkedList(int data) {
 		data = this.data;
-		next = null;
 	}
 }

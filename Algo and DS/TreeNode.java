@@ -1,7 +1,7 @@
-class Node {
+class TreeNode {
 	int data;
-	Node left, right;
-	public Node(int item) {
+	TreeNode left, right;
+	public TreeNode(int item) {
 		data = item;
 		left = null;
 		right = null;
@@ -10,7 +10,7 @@ class Node {
 		System.out.print(this.data + " ");
 	}
 
-	public static int minValue(Node n) {
+	public static int minValue(TreeNode n) {
 		int min = n.data;
 		while(n.left != null) {
 			n = n.left;

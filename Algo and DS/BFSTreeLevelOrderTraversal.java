@@ -1,13 +1,13 @@
 import java.util.Queue;
 import java.util.LinkedList;
 class BFSTreeLevelOrderTraversal {
-	Node root;
-	Node left;
-	Node right;
+	TreeNode root;
+	TreeNode left;
+	TreeNode right;
 
 	public void bfs() {
 		//1. Create empty queue
-		Queue<Node> que = new LinkedList<Node>();
+		Queue<TreeNode> que = new LinkedList<TreeNode>();
 		// 2. Take the first element (root) and add it to queue
 		que.add(this.root);
 		// 3. Repeat while the queue is not empty
@@ -16,7 +16,7 @@ class BFSTreeLevelOrderTraversal {
 			// 3.2 Print the data of the removed element
 			// 3.3 Add the not null left and right child of the element to the queue 
 			// Repeat
-			Node temp = que.poll();
+			TreeNode temp = que.poll();
 			temp.printNodeElement();
 			if(temp.left != null)
 				que.add(temp.left);
@@ -27,14 +27,14 @@ class BFSTreeLevelOrderTraversal {
 	}
 	public static void main(String[] args) {
 		BFSTreeLevelOrderTraversal t = new BFSTreeLevelOrderTraversal();
-		t.root = new Node(1);
-		t.root.left = new Node(2);
-		t.root.right = new Node(3);
-		t.root.left.left = new Node(4);
-		t.root.left.right = new Node(5);
-		t.root.right.left = new Node(6);
-		t.root.right.right = new Node(7);
-		t.root.right.right.right = new Node(8);
+		t.root = new TreeNode(1);
+		t.root.left = new TreeNode(2);
+		t.root.right = new TreeNode(3);
+		t.root.left.left = new TreeNode(4);
+		t.root.left.right = new TreeNode(5);
+		t.root.right.left = new TreeNode(6);
+		t.root.right.right = new TreeNode(7);
+		t.root.right.right.right = new TreeNode(8);
 		t.bfs();
 	}
 }

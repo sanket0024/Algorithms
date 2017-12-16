@@ -1,17 +1,17 @@
-class LinkedList {
+public class LinkedList {
 	// declare head node
 	LinkedListNode head;
-	// Node that contains data and link to the next node
-	class LinkedListNode {
-		int data;
-		LinkedListNode next;
-		// constructor
-		public LinkedListNode(int data) {
-			this.data = data;
-			LinkedListNode next = null;
-		}
+
+	public LinkedList() {
+		this.head = null;
 	}
-	void addNodeAtEnd(int d) {
+
+	public LinkedList(LinkedListNode head) {
+		this.head = head;
+	}
+
+
+	public void addNodeAtEnd(int d) {
 		/*
 		1. check if head is empty?
 			if true: that means the linkedlist is empty
@@ -75,6 +75,16 @@ class LinkedList {
 		}
 		System.out.println("Match not found for:" + d);
 
+	}
+
+	int size() {
+		int count = 0;
+		LinkedListNode temp = this.head;
+		while(temp != null) {
+			temp = temp.next;
+			count++;
+		}
+		return count;
 	}
 	void printLinkedList() {
 		System.out.println("**PRINTING LINKEDLIST**");

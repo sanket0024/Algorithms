@@ -1,7 +1,8 @@
-import java.util.*;
+import java.util.LinkedList;
+import java.util.ListIterator;
 class BFSGraph {
 	int numOfVertices;
-	LinkedList<Integer> adj[];
+	LinkedList<Integer>[] adj;
 	BFSGraph (int v) {
 		numOfVertices = v;
 		adj = new LinkedList[v];
@@ -9,7 +10,7 @@ class BFSGraph {
 			ll = new LinkedList<Integer>();
 		}*/
 		for (int i=0; i<numOfVertices; ++i)
-            adj[i] = new LinkedList();
+            adj[i] = new LinkedList<Integer>();
 	}
 	void addEdge(int v1, int v2) {
 		adj[v1].add(v2);
