@@ -70,6 +70,6 @@ class KarpRabinAlgo {
 	}
 	public static void main(String[] args) {
 		KarpRabinAlgo kp = new KarpRabinAlgo();
-		kp.search("bcd", "abcdefghijklmnopabcd", 17);
+		kp.search("bcd", "abcdefghijklmnopabcd", 1812379);
 	}
 }

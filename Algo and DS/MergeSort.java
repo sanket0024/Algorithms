@@ -1,5 +1,66 @@
 class MergeSort {
+	/*
+	* Divide and conquer algorthim.
+	*/
+	public void merge(int[] arr, int l, int m, int r) {
+		int[] temp1 = new int[m-l+1];
+		int[] temp2 = new int[r-m];
+		for(int i=0; i<temp1.length; i++) {
+			temp1[i] = arr[l+i];
+		}
+		for(int j=0; j<temp2.length; j++) {
+			temp2[j] = arr[m+1+j];
+		}
+		int k=l, i=0, j=0;
+		while(i<temp1.length && j<temp2.length) {
+			if(temp1[i] < temp2[j]) {
+				arr[k] = temp1[i];
+				i++;
+			}
+			else {
+				arr[k] = temp2[j];
+				j++;
+			}
+			k++;
+		}
+		while(i<temp1.length) {
+			arr[k] = temp1[i];
+			i++;
+			k++;
+		}
+		while(j<temp2.length) {
+			arr[k] = temp2[j];
+			j++;
+			k++;
+		}
+	}
+
+	public void mergeSort(int[] arr, int l, int r) {
+		if(l<r) {
+			int m = (l+r)/2;
+			
+			// splitting the array
+			mergeSort(arr, l, m);
+			mergeSort(arr, m+1, r);
+
+			// merging the arrays in sorted manner
+			merge(arr, l, m, r);
+		}
+	}
+
+	public void printArray(int[] a) {
+		for(int x: a)
+			System.out.println(x);
+	}
 	public static void main(String args[]){
+		int array[] = {1,2,5,7,2,41,3,53,0};
+		MergeSort ms = new MergeSort();
+		ms.mergeSort(array, 0, array.length-1);
+		ms.printArray(array);
+	}
+
+
+	/*public static void main(String args[]){
 		int array[] = {1,2,5,7,2,41,3,53,0};
 		mergeSort(array);
 	}
@@ -39,5 +100,5 @@ class MergeSort {
 		System.arraycopy(arr, left, temp, index, leftEnd - left + 1);
 		System.arraycopy(arr, right, temp, index, rightEnd - right + 1);
 		System.arraycopy(temp, leftStart, arr, leftStart, size);
-	}
+	}*/
 }
