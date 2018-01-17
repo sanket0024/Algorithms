@@ -2,27 +2,57 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.PriorityQueue;
 import java.util.Stack;
-
+import java.util.Iterator;
 class Graph {
 	//representation of graph using adjacency list
 	LinkedList<Integer>[] adjacencyList;
 	int numOfVertexes;
+	int numOfEdges;
+	class Edge {
+		int src, dest;
+	};
+	Edge[] edges;
+	int edgeCount;	// count for the number of edges added so far
 
 	// constructor
-	Graph(int numOfVertexes) {
+	Graph(int numOfVertexes, int numOfEdges) {
 		this.numOfVertexes = numOfVertexes;
+		this.numOfEdges = numOfEdges;
 		adjacencyList = new LinkedList[numOfVertexes];
 		for(int i=0; i<numOfVertexes; i++) {
 			adjacencyList[i] = new LinkedList<Integer>();
 		}
+		edges = new Edge[numOfEdges];
+		for(int i=0; i<numOfEdges; i++) {
+			edges[i] = new Edge();
+		}
 	}
 
-	// add edge to the graph
-	public void addEdge(int v1, int v2) {
+	// add undirected edge to the graph
+	public void addUndirectedEdge(int v1, int v2) {
+		edgeCount++;
+		if(edgeCount > numOfEdges) {
+			System.out.println("Number of edges exceed than allowed");
+			System.exit(1);
+		}
+		edges[edgeCount-1].src = v1;
+		edges[edgeCount-1].dest = v2;
 		adjacencyList[v1].add(v2);
 		// because graph is undirected so we need to add the
 		// src to the list of dest as well
 		adjacencyList[v2].add(v1);
+	}
+
+	// add undirected edge to the graph
+	public void addDirectedEdge(int v1, int v2) {
+		edgeCount++;
+		if(edgeCount > numOfEdges) {
+			System.out.println("Number of edges exceed than allowed");
+			System.exit(1);
+		}
+		edges[edgeCount-1].src = v1;
+		edges[edgeCount-1].dest = v2;
+		adjacencyList[v1].add(v2);
 	}
 
 	//print adjacency list for the given node
@@ -100,21 +130,67 @@ class Graph {
 		System.out.println();
 	}
 
+	// find whether an undirected graph has cycle or not
+	public boolean hasCycles() {
+		boolean[] visited = new boolean[numOfVertexes];
+		for(int i=0; i<numOfVertexes; i++) {
+			visited[i] = false;
+		}
+		for(int i=0; i<numOfVertexes; i++) {
+			if(!visited[i]) {
+				if(isCyclic(visited, i, -1)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isCyclic(boolean[] visited, int currentNode, int parent) {
+		visited[currentNode] = true;
+		LinkedList<Integer> temp = adjacencyList[currentNode];
+		Iterator it = temp.iterator();
+		while(it.hasNext()) {
+			Integer nTemp = (int)it.next();
+			if(!visited[nTemp]) {
+				if(isCyclic(visited, nTemp, currentNode)) {
+					return true;
+				}
+			}
+			else if(parent != nTemp) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static void main(String[] args) {
-		Graph g = new Graph(5);
-		g.addEdge(0,1);
-		g.addEdge(0,2);
-		g.addEdge(0,3);
-		g.addEdge(1,2);
-		g.addEdge(1,3);
-		g.addEdge(1,4);
-		g.addEdge(3,4);
-		g.printAdjacencyList(0);
-		g.printAdjacencyList(1);
-		g.printAdjacencyList(2);
-		g.printAdjacencyList(3);
-		g.printAdjacencyList(4);
-		g.BFS(0);
-		g.DFS(0);
+		// Graph undirected = new Graph(5,8);
+		// undirected.addUndirectedEdge(0,1);
+		// undirected.addUndirectedEdge(1,2);
+		// undirected.addUndirectedEdge(0,0);
+		// undirected.addUndirectedEdge(0,0);
+		// undirected.addUndirectedEdge(1,2);
+		// undirected.addUndirectedEdge(1,3);
+		// undirected.addUndirectedEdge(1,4);
+		// undirected.addUndirectedEdge(3,4);
+
+		Graph directed = new Graph(5,8);
+		directed.addDirectedEdge(0,1);
+		directed.addDirectedEdge(1,0);
+		// directed.addDirectedEdge(2,0);
+		//directed.addDirectedEdge(0,0);
+		// directed.addDirectedEdge(1,2);
+		// directed.addDirectedEdge(1,3);
+		// directed.addDirectedEdge(1,4);
+		// directed.addDirectedEdge(3,4);
+		directed.printAdjacencyList(0);
+		directed.printAdjacencyList(1);
+		directed.printAdjacencyList(2);
+		// directed.printAdjacencyList(3);
+		// directed.printAdjacencyList(4);
+		// directed.BFS(0);
+		// directed.DFS(0);
+		System.out.println(directed.hasCycles());
 	}
 }

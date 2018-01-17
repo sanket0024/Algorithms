@@ -119,9 +119,45 @@ class BST {
 		}
 	}
 
+	static int minValue = Integer.MAX_VALUE;
+	static int minKey = Integer.MAX_VALUE;
+	public static int minAbsDiff(int n, TreeNode root) {
+		if(root != null) {
+			if(minValue > Math.abs(n - root.data)) {
+				minValue = Math.abs(n - root.data);
+				minKey = root.data;
+			}
+			if(root.data == n) {
+				return root.data;
+			}
+			else if(root.left != null && n < root.data) {
+				minAbsDiff(n, root.left);
+			}
+			else if(root.right != null && n > root.data) {
+				minAbsDiff(n, root.right);
+			}
+		}
+		return minKey;
+	}
+
+
+	static int min = Integer.MAX_VALUE;
+	static int min2 = Integer.MAX_VALUE;
+	public static int secMin(TreeNode root) {
+		if(root != null) {
+			if(root.data <= min) {
+				min2 = min;
+				min = root.data;
+			}
+			secMin(root.left);
+			secMin(root.right);
+		}
+		return min2;
+	}
+
 	public static void main(String[] args) {
-		TreeNode binTree = new TreeNode(10);
-		binTree.left = new TreeNode(5);
+		TreeNode binTree = new TreeNode(151);
+		/*binTree.left = new TreeNode(5);
 		binTree.left.left = new TreeNode(3);
 		binTree.left.right = new TreeNode(6);
 		binTree.left.left.left = new TreeNode(1);
@@ -130,7 +166,17 @@ class BST {
 		binTree.right.left = new TreeNode(13);
 		binTree.right.right = new TreeNode(17);
 		binTree.right.left.left = new TreeNode(12);
-		binTree.right.left.right = new TreeNode(14);
+		binTree.right.left.right = new TreeNode(14);*/
+		binTree.left = new TreeNode(151);
+		binTree.left.left = new TreeNode(151);
+		binTree.left.right = new TreeNode(151);
+		binTree.left.left.left = new TreeNode(151);
+		binTree.left.left.right = new TreeNode(151);
+		binTree.right = new TreeNode(151);
+		binTree.right.left = new TreeNode(151);
+		//binTree.right.right = new TreeNode(27);
+		binTree.right.left.left = new TreeNode(151);
+		binTree.right.left.right = new TreeNode(151);
 		System.out.println("***************\nINPUT TREE\n***************");
 		System.out.println("\nPre Order");
 		BST.preOrderPrint(binTree);
@@ -141,7 +187,9 @@ class BST {
 		System.out.println("\nLevel Order");
 		BST.levelOrderPrint(binTree);
 		System.out.println();
-
+		//System.out.println(BST.minAbsDiff(8, binTree));
+		System.out.println(BST.secMin(binTree));
+		/*
 		Scanner scan = new Scanner(System.in);
 		System.out.println("\nSelect one number:");
 		System.out.println("1. Search \n2. Insert \n3. Remove\n");
@@ -197,6 +245,6 @@ class BST {
 			System.out.println("\nLevel Order");
 			BST.levelOrderPrint(binTree);
 			System.out.println("\n****************************");
-		}
+		}*/
 	}
 }

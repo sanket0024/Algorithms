@@ -10,6 +10,7 @@ class TreeNode {
 		System.out.print(this.data + " ");
 	}
 
+	// for BST
 	public static int minValue(TreeNode n) {
 		int min = n.data;
 		while(n.left != null) {
