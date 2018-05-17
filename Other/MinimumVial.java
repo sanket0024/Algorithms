@@ -7,7 +7,7 @@ class MinimumVial {
 		while(m > 0) {
 
 			/**
-			* checki if it is available, otherwise remove it
+			* check if it is available, otherwise remove it
 			*/
 			for(int i=0; i<capacity.size(); i++) {
 				if(capacity.get(i) == 0) {
@@ -35,7 +35,7 @@ class MinimumVial {
 
 			m = m - input.get(i);
 			vileCount++;
-			//System.out.println(input.get(i));
+			System.out.println(input.get(i));
 		}
 		return vileCount;
 	}
@@ -61,21 +61,20 @@ class MinimumVial {
 
 	public static void main(String[] args) {
 		MinimumVial vials = new MinimumVial();
-		//int[] input = {5, 10, 20, 50};
 		List<Integer> input = new ArrayList<>();
-		//input.add(1);
+		input.add(1);
 		input.add(5);
 		input.add(10);
 		input.add(20);
 		input.add(50);
 
 		List<Integer> capacity = new ArrayList<>();
-		//capacity.add(3);
+		capacity.add(100);
+		capacity.add(0);
+		capacity.add(0);
 		capacity.add(3);
-		capacity.add(3);
-		capacity.add(3);
-		capacity.add(3);
+		capacity.add(1);
 
-		System.out.println(vials.minimumVials(input, 42, capacity));
+		System.out.println(vials.minimumVials(input, 60, capacity));
 	}
 }

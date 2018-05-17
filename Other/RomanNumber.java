@@ -3,7 +3,7 @@ class RomanNumber {
 		int current = 0;
 		int previous = Integer.MAX_VALUE;
 		int sum = 0;
-		for(int i=0; i<roman.length; i++) {
+		for(int i=0; i<roman.length(); i++) {
 			switch(roman.charAt(i)) {
 				case 'I': 
 					current = 1;
@@ -35,5 +35,6 @@ class RomanNumber {
 			}
 			previous = current;
 		}
+		return sum;
 	}
 }

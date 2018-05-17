@@ -5,17 +5,14 @@ import java.util.Stack;
 import java.util.Iterator;
 class Graph {
 	//representation of graph using adjacency list
-	LinkedList<Integer>[] adjacencyList;
-	int numOfVertexes;
-	int numOfEdges;
-	class Edge {
-		int src, dest;
-	};
-	Edge[] edges;
-	int edgeCount;	// count for the number of edges added so far
+	public LinkedList<Integer>[] adjacencyList;
+	public int numOfVertexes;
+	public int numOfEdges;
+	public Edge[] edges;
+	public  int edgeCount;	// count for the number of edges added so far
 
 	// constructor
-	Graph(int numOfVertexes, int numOfEdges) {
+	public  Graph(int numOfVertexes, int numOfEdges) {
 		this.numOfVertexes = numOfVertexes;
 		this.numOfEdges = numOfEdges;
 		adjacencyList = new LinkedList[numOfVertexes];
@@ -29,7 +26,7 @@ class Graph {
 	}
 
 	// add undirected edge to the graph
-	public void addUndirectedEdge(int v1, int v2) {
+	public void addUndirectedEdge(int v1, int v2, int weight) {
 		edgeCount++;
 		if(edgeCount > numOfEdges) {
 			System.out.println("Number of edges exceed than allowed");
@@ -37,6 +34,7 @@ class Graph {
 		}
 		edges[edgeCount-1].src = v1;
 		edges[edgeCount-1].dest = v2;
+		edges[edgeCount-1].weight = weight;
 		adjacencyList[v1].add(v2);
 		// because graph is undirected so we need to add the
 		// src to the list of dest as well
@@ -44,7 +42,7 @@ class Graph {
 	}
 
 	// add undirected edge to the graph
-	public void addDirectedEdge(int v1, int v2) {
+	public void addDirectedEdge(int v1, int v2, int weight) {
 		edgeCount++;
 		if(edgeCount > numOfEdges) {
 			System.out.println("Number of edges exceed than allowed");
@@ -52,6 +50,7 @@ class Graph {
 		}
 		edges[edgeCount-1].src = v1;
 		edges[edgeCount-1].dest = v2;
+		edges[edgeCount-1].weight = weight;
 		adjacencyList[v1].add(v2);
 	}
 
@@ -165,32 +164,32 @@ class Graph {
 	}
 
 	public static void main(String[] args) {
-		// Graph undirected = new Graph(5,8);
-		// undirected.addUndirectedEdge(0,1);
-		// undirected.addUndirectedEdge(1,2);
-		// undirected.addUndirectedEdge(0,0);
-		// undirected.addUndirectedEdge(0,0);
-		// undirected.addUndirectedEdge(1,2);
-		// undirected.addUndirectedEdge(1,3);
-		// undirected.addUndirectedEdge(1,4);
-		// undirected.addUndirectedEdge(3,4);
+		Graph undirected = new Graph(1,2);
+		undirected.addUndirectedEdge(2,3,0);
+		undirected.addUndirectedEdge(3,1,0);
+		undirected.addUndirectedEdge(3,4,0);
+		undirected.addUndirectedEdge(4,5,0);
+		undirected.addUndirectedEdge(6,1,0);
+		undirected.addUndirectedEdge(7,6,0);
+		undirected.addUndirectedEdge(7,8,0);
+		undirected.addUndirectedEdge(8,6,0);
 
-		Graph directed = new Graph(5,8);
-		directed.addDirectedEdge(0,1);
-		directed.addDirectedEdge(1,0);
-		// directed.addDirectedEdge(2,0);
-		//directed.addDirectedEdge(0,0);
-		// directed.addDirectedEdge(1,2);
-		// directed.addDirectedEdge(1,3);
-		// directed.addDirectedEdge(1,4);
-		// directed.addDirectedEdge(3,4);
-		directed.printAdjacencyList(0);
-		directed.printAdjacencyList(1);
-		directed.printAdjacencyList(2);
+		// Graph directed = new Graph(5,8);
+		// directed.addDirectedEdge(0,1,0);
+		// directed.addDirectedEdge(1,0,0);
+		// directed.addDirectedEdge(2,0,0);
+		// directed.addDirectedEdge(0,0,0);
+		// directed.addDirectedEdge(1,2,0);
+		// directed.addDirectedEdge(1,3,0);
+		// directed.addDirectedEdge(1,4,0);
+		// directed.addDirectedEdge(3,4,0);
+		// directed.printAdjacencyList(0);
+		// directed.printAdjacencyList(1);
+		// directed.printAdjacencyList(2);
 		// directed.printAdjacencyList(3);
 		// directed.printAdjacencyList(4);
 		// directed.BFS(0);
 		// directed.DFS(0);
-		System.out.println(directed.hasCycles());
+		// System.out.println(directed.hasCycles());
 	}
 }
