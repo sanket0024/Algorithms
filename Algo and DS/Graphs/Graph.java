@@ -41,7 +41,7 @@ class Graph {
 		adjacencyList[v2].add(v1);
 	}
 
-	// add undirected edge to the graph
+	// add directed edge to the graph
 	public void addDirectedEdge(int v1, int v2, int weight) {
 		edgeCount++;
 		if(edgeCount > numOfEdges) {
@@ -129,15 +129,18 @@ class Graph {
 		System.out.println();
 	}
 
+	/***************************************
+	****Detect cycle in undirected graph****
+	***************************************/
 	// find whether an undirected graph has cycle or not
-	public boolean hasCycles() {
+	public boolean hasCyclesUndirected() {
 		boolean[] visited = new boolean[numOfVertexes];
 		for(int i=0; i<numOfVertexes; i++) {
 			visited[i] = false;
 		}
 		for(int i=0; i<numOfVertexes; i++) {
 			if(!visited[i]) {
-				if(isCyclic(visited, i, -1)) {
+				if(isCyclicUndirected(visited, i, -1)) {
 					return true;
 				}
 			}
@@ -145,14 +148,15 @@ class Graph {
 		return false;
 	}
 
-	public boolean isCyclic(boolean[] visited, int currentNode, int parent) {
+	// helper method to detect cycle in an undirected graph
+	public boolean isCyclicUndirected(boolean[] visited, int currentNode, int parent) {
 		visited[currentNode] = true;
 		LinkedList<Integer> temp = adjacencyList[currentNode];
-		Iterator it = temp.iterator();
+		Iterator<Integer> it = temp.iterator();
 		while(it.hasNext()) {
-			Integer nTemp = (int)it.next();
+			Integer nTemp = it.next();
 			if(!visited[nTemp]) {
-				if(isCyclic(visited, nTemp, currentNode)) {
+				if(isCyclicUndirected(visited, nTemp, currentNode)) {
 					return true;
 				}
 			}
@@ -163,33 +167,70 @@ class Graph {
 		return false;
 	}
 
-	public static void main(String[] args) {
-		Graph undirected = new Graph(1,2);
-		undirected.addUndirectedEdge(2,3,0);
-		undirected.addUndirectedEdge(3,1,0);
-		undirected.addUndirectedEdge(3,4,0);
-		undirected.addUndirectedEdge(4,5,0);
-		undirected.addUndirectedEdge(6,1,0);
-		undirected.addUndirectedEdge(7,6,0);
-		undirected.addUndirectedEdge(7,8,0);
-		undirected.addUndirectedEdge(8,6,0);
 
-		// Graph directed = new Graph(5,8);
-		// directed.addDirectedEdge(0,1,0);
-		// directed.addDirectedEdge(1,0,0);
-		// directed.addDirectedEdge(2,0,0);
-		// directed.addDirectedEdge(0,0,0);
-		// directed.addDirectedEdge(1,2,0);
-		// directed.addDirectedEdge(1,3,0);
-		// directed.addDirectedEdge(1,4,0);
-		// directed.addDirectedEdge(3,4,0);
-		// directed.printAdjacencyList(0);
-		// directed.printAdjacencyList(1);
-		// directed.printAdjacencyList(2);
-		// directed.printAdjacencyList(3);
-		// directed.printAdjacencyList(4);
-		// directed.BFS(0);
-		// directed.DFS(0);
-		// System.out.println(directed.hasCycles());
+	/***************************************
+	****Detect cycle in directed graph****
+	***************************************/
+	// find whether an directed graph has cycle or not
+	public boolean hasCyclesDirected() {
+		String[] visited = new String[numOfVertexes];
+		for(int i=0; i<visited.length; i++) {
+			visited[i] = "white";
+		}
+		for(int i=0; i<numOfVertexes; i++) {
+			if(visited[i].equalsIgnoreCase("white")) {
+				if(isCyclicDirected(visited, i)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	// helper method to detect a cycle in a directed graph
+	private boolean isCyclicDirected(String[] visited, int currentNode) {
+		visited[currentNode] = "grey";
+		LinkedList<Integer> temp = adjacencyList[currentNode];
+		Iterator<Integer> it = temp.iterator();
+		while(it.hasNext()) {
+			int nTemp = it.next();
+			if(visited[nTemp].equalsIgnoreCase("grey")) {
+				return true;
+			}
+			if(visited[nTemp].equalsIgnoreCase("white") && isCyclicDirected(visited, nTemp)) {
+				return true;
+			}
+		}
+		visited[currentNode] = "black";
+		return false;
+
+	}
+
+	public static void main(String[] args) {
+		// Graph undirected = new Graph(1,2);
+		// undirected.addUndirectedEdge(2,3,0);
+		// undirected.addUndirectedEdge(3,1,0);
+		// undirected.addUndirectedEdge(3,4,0);
+		// undirected.addUndirectedEdge(4,5,0);
+		// undirected.addUndirectedEdge(6,1,0);
+		// undirected.addUndirectedEdge(7,6,0);
+		// undirected.addUndirectedEdge(7,8,0);
+		// undirected.addUndirectedEdge(8,6,0);
+
+		Graph directed = new Graph(5,8);
+		directed.addDirectedEdge(0,1,0);
+		directed.addDirectedEdge(2,0,0);
+		directed.addDirectedEdge(2,1,0);
+		directed.addDirectedEdge(1,3,0);
+		directed.addDirectedEdge(1,4,0);
+		directed.addDirectedEdge(3,4,0);
+		directed.printAdjacencyList(0);
+		directed.printAdjacencyList(1);
+		directed.printAdjacencyList(2);
+		directed.printAdjacencyList(3);
+		directed.printAdjacencyList(4);
+		//directed.BFS(0);
+		//directed.DFS(0);
+		System.out.println(directed.hasCyclesDirected());
 	}
 }
