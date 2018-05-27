@@ -59,8 +59,9 @@ public class RadixSort {
 			aux[i] += aux[i-1];
 		}
 		for(int i=result.length-1; i>=0; i--) {
-			result[aux[(nums[i]/place)%10]-1] = nums[i];
-			aux[(nums[i]/place)%10]--;
+			int v = (nums[i]/place)%10;
+			result[aux[v]-1] = nums[i];
+			aux[v]--;
 		}
 		for(int i=0; i<nums.length; i++) {
 			nums[i] = result[i];

@@ -4,11 +4,7 @@ Additional Programs:
 - Java Swing programs
 
 Algo and DS
-  - Basic algorithms and some data structure code in Java
-
-CTCI:
-  - Refer to the CTCI book for CTCI folder questions
-  - Tried to minimize the complexity of the program
+  - Algorithms and some data structure code in Java
   
 Other:
   - Additional Java programs
