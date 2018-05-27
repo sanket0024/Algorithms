@@ -12,6 +12,7 @@
  * 1. Random access is not allowed
  * 2. Extra memory space to store pointer 
  * 
+ * Complexities will cover the search time as well
  */
 
 package DoublyLinkedList;
