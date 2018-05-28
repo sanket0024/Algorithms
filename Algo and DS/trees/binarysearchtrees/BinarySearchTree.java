@@ -1,5 +1,15 @@
 /**
- * Tree properties:
+ * Terminologies:
+ * 1. Depth of a node: length of (unique) path from root to that node
+ * 2. Height of a node: length of longest path from node to the leaf
+ * 3. Height of tree: height of root
+ * 4. Full binary tree: Every node is either leaf or has 2 children
+ * 5. Perfect binary tree: All the interior levels will have 2 children and
+ * all the leaves will be on the same level
+ * 6. Complete tree: all the nodes except possibly at the last level will have
+ * two children and all the nodes in the last level will be as left as possible
+ * 
+ * Binary Search Tree properties:
  * 1. each node will have at most 2 children
  * 2. all the elements in the left subtree will be smaller than roots
  * 3. all the elements in the left subtree will be greater than roots
@@ -7,11 +17,14 @@
  * Assumption: there are no duplicates
  * 
  * Complexity:
- * Time complexity: O(n)
- * Space complexity: O(n)
+ * Time complexity: O(h)
+ * Space complexity: O(h)
+ * where h is the height of the tree
+ * and it can be equal to the n when the tree is skewed
+ * where n is the number of elements in the tree
  * 
  */
-package binarysearchtres;
+package binarysearchtrees;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -217,6 +230,5 @@ public class BinarySearchTree {
 		System.out.println("Delete: LevelOrder");
 		bst.levelOrder(root, result);
 		bst.printList(result);
-		
 	}
 }

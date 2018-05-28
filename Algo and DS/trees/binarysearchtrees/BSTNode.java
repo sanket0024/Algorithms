@@ -1,7 +1,7 @@
 /**
  * The node of a binary search tree
  */
-package binarysearchtres;
+package binarysearchtrees;
 
 /**
  * @author sanketmathur
