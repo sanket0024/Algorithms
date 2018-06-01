@@ -1,236 +1,283 @@
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.PriorityQueue;
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
-class Graph {
-	//representation of graph using adjacency list
-	public LinkedList<Integer>[] adjacencyList;
-	public int numOfVertexes;
-	public int numOfEdges;
-	public Edge[] edges;
-	public  int edgeCount;	// count for the number of edges added so far
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 
-	// constructor
-	public  Graph(int numOfVertexes, int numOfEdges) {
-		this.numOfVertexes = numOfVertexes;
-		this.numOfEdges = numOfEdges;
-		adjacencyList = new LinkedList[numOfVertexes];
-		for(int i=0; i<numOfVertexes; i++) {
-			adjacencyList[i] = new LinkedList<Integer>();
+/**
+ * Graph data structure stores the data in the form of:
+ * 1. vertices
+ * 2. edges
+ * 
+ * It can be represented in two forms:
+ * 1. Adjacency matrix
+ * 2. Adjacency list
+ * 
+ * For adjacency matrix:
+ * Traversal complexities
+ * Time complexity: O(V^2)
+ * Space complexity: O(V^2)
+ * Properties:
+ * 1. Easier to implement and query like, add/remove an edge will
+ * take O(1) time
+ * 2. Queries like whether there is an edge between u and v will take O(1)
+ * 3. Space required is O(V^2) even if the graph is sparse
+ * 
+ * For adjacency list:
+ * Traversal complexities:
+ * Time complexity: O(V + E)
+ * Space complexity: O(V + E)
+ *  
+ *  This implementation uses the adjacency list
+ */
+
+/**
+ * @author sanketmathur
+ *
+ */
+public class Graph {
+	
+	int V;
+	int E;
+	LinkedList<Integer>[] adjList;
+	Edge[] edges;
+	int edgeCount = 0;
+	public Graph(int V, int E) {
+		this.V = V;
+		this.E = E;
+		adjList = new LinkedList[V];
+		for(int i=0; i<V; i++) {
+			adjList[i] = new LinkedList<>();
 		}
-		edges = new Edge[numOfEdges];
-		for(int i=0; i<numOfEdges; i++) {
-			edges[i] = new Edge();
-		}
+		edges = new Edge[E];
 	}
-
-	// add undirected edge to the graph
-	public void addUndirectedEdge(int v1, int v2, int weight) {
+	
+	/**
+	 * add a directed edge from u to v by updating the adj list
+	 * @param u
+	 * @param v
+	 */
+	public void addDirectedEdge(int u, int v) {
+		adjList[u].add(v);
+		edges[edgeCount] = new Edge(u, v, 0);
 		edgeCount++;
-		if(edgeCount > numOfEdges) {
-			System.out.println("Number of edges exceed than allowed");
-			System.exit(1);
-		}
-		edges[edgeCount-1].src = v1;
-		edges[edgeCount-1].dest = v2;
-		edges[edgeCount-1].weight = weight;
-		adjacencyList[v1].add(v2);
-		// because graph is undirected so we need to add the
-		// src to the list of dest as well
-		adjacencyList[v2].add(v1);
 	}
-
-	// add directed edge to the graph
-	public void addDirectedEdge(int v1, int v2, int weight) {
+	
+	public void addDirectedEdge(int u, int v, int weight) {
+		adjList[u].add(v);
+		edges[edgeCount] = new Edge(u, v, weight);
 		edgeCount++;
-		if(edgeCount > numOfEdges) {
-			System.out.println("Number of edges exceed than allowed");
-			System.exit(1);
-		}
-		edges[edgeCount-1].src = v1;
-		edges[edgeCount-1].dest = v2;
-		edges[edgeCount-1].weight = weight;
-		adjacencyList[v1].add(v2);
 	}
-
-	//print adjacency list for the given node
-	public void printAdjacencyList(int vertex) {
-		System.out.println("\nAdjacency list for node " + vertex + ":");
-		for(int i=0; i<adjacencyList[vertex].size(); i++) {
-			System.out.print(adjacencyList[vertex].get(i) + " ");
-		}
-		System.out.println();
+	
+	/**
+	 * add an undirected edge from u to v by updating the adj list
+	 * @param u
+	 * @param v
+	 */
+	public void addUndirectedEdge(int u, int v) {
+		adjList[u].add(v);
+		adjList[v].add(u);
+		edges[edgeCount] = new Edge(u, v, 0);
+		edgeCount++;
 	}
-
-	// Graph traversal BFS 
-	/*
-	* 1. Initialize all the nodes with the status as NV - not visited
-	* 2. Put the starting node into the queue and mark it as visited
-	* 3. Repeat step 4 to 7 until queue is not empty:
-	* 4.  Remove from the front of the queue
-	* 5.  Process node
-	* 6.  Add adjascent nodes of the current node to the queue whose
-	*     status is not visited
-	* 7.  Change the status of node to visited
-	* 8. Exit
-	*/
-	public void BFS(int n) {
-		Queue<Integer> q = new PriorityQueue<Integer>();
-		boolean[] visited = new boolean[numOfVertexes];
+	
+	public void addUndirectedEdge(int u, int v, int weight) {
+		adjList[u].add(v);
+		adjList[v].add(u);
+		edges[edgeCount] = new Edge(u, v, weight);
+		edgeCount++;
+	}
+	
+	/**
+	 * Breadth first search using queue
+	 * @param source
+	 * @return
+	 */
+	public List<Integer> BFS(int source) {
+		List<Integer> result = new ArrayList<>();
+		Queue<Integer> que = new LinkedList<>();
+		Boolean[] visited = new Boolean[V];
+		Arrays.fill(visited, false);
+		BFSHelper(source, que, visited, result);
 		for(int i=0; i<visited.length; i++) {
-			visited[i] = false;
-		}
-		q.offer(n);
-		visited[n] = true;
-		System.out.println("BFS Traversal from node " + n +": ");
-		while(!q.isEmpty()) {
-			int tempNode = q.poll();
-			System.out.print(tempNode + " ");
-			LinkedList<Integer> tempList = adjacencyList[tempNode];
-			for(int i=0; i<tempList.size(); i++) {
-				if(!visited[tempList.get(i)]) {
-					q.offer(tempList.get(i));
-					visited[tempList.get(i)] = true;
-				}
-			}
-		}
-		System.out.println();
-	}
-
-	// Graph traversal DFS
-	/*
-	* 1. Initialize all the nodes with the status as not visited
-	* 2. Put the starting node onto the stack and mark it as visited
-	* 3. Repeat steps 4 to 7 until stack is not empty
-	* 4.  Pop an item from the stack
-	*.5.  Process the item 
-	* 6.  Add to the stack all the adjacent nodes whose status is not visited
-	* 7.  Change the status of the node to visited
-	* 8. Exit
-	*/
-	public void DFS(int n) {
-		Stack<Integer> s = new Stack<Integer>();
-		boolean[] visited = new boolean[numOfVertexes];
-		s.push(n);
-		visited[n] = true;
-		System.out.println("DFS Traversal from node " + n +": ");
-		while(!s.empty()) {
-			int tempNode = s.pop();
-			System.out.print(tempNode + " ");
-			LinkedList<Integer> tempList = adjacencyList[tempNode];
-			for(int i=0; i<tempList.size(); i++) {
-				if(!visited[tempList.get(i)]) {
-					s.push(tempList.get(i));
-					visited[tempList.get(i)] = true;
-				}
-			}
-		}
-		System.out.println();
-	}
-
-	/***************************************
-	****Detect cycle in undirected graph****
-	***************************************/
-	// find whether an undirected graph has cycle or not
-	public boolean hasCyclesUndirected() {
-		boolean[] visited = new boolean[numOfVertexes];
-		for(int i=0; i<numOfVertexes; i++) {
-			visited[i] = false;
-		}
-		for(int i=0; i<numOfVertexes; i++) {
 			if(!visited[i]) {
-				if(isCyclicUndirected(visited, i, -1)) {
-					return true;
+				BFSHelper(i, que, visited, result);
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * A helper function for BFS
+	 * @param s
+	 * @param que
+	 * @param visited
+	 * @param result
+	 */
+	private void BFSHelper(int s, Queue<Integer> que, Boolean[] visited, List<Integer> result) {
+		que.add(s);
+		visited[s] = true;
+		while(!que.isEmpty()) {
+			int u = que.poll();
+			result.add(u);
+			Iterator<Integer> it = adjList[u].iterator();
+			while(it.hasNext()) {
+				int v = it.next();
+				if(!visited[v]) {
+					que.add(v);
+					visited[v] = true;
 				}
 			}
 		}
-		return false;
 	}
-
-	// helper method to detect cycle in an undirected graph
-	public boolean isCyclicUndirected(boolean[] visited, int currentNode, int parent) {
-		visited[currentNode] = true;
-		LinkedList<Integer> temp = adjacencyList[currentNode];
-		Iterator<Integer> it = temp.iterator();
+	
+	
+	/**
+	 * Depth first search using stack
+	 * @param source
+	 * @return
+	 */
+	public List<Integer> DFSStack(int source) {
+		List<Integer> result = new ArrayList<>();
+		Boolean[] visited = new Boolean[V];
+		Arrays.fill(visited, false);
+		Stack<Integer> st = new Stack<>();
+		DFSStackHelper(source, st, visited, result);
+		for(int i=0; i<V; i++) {
+			if(!visited[i]) {
+				DFSStackHelper(i, st, visited, result);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * DFS stack helper
+	 * @param s
+	 * @param st
+	 * @param visited
+	 * @param result
+	 */
+	public void DFSStackHelper(int s, Stack<Integer> st, Boolean[] visited, List<Integer> result) {
+		st.push(s);
+		visited[s] = true;
+		while(!st.isEmpty()) {
+			int u = st.pop();
+			result.add(u);
+			Iterator<Integer> it = adjList[u].iterator();
+			while(it.hasNext()) {
+				int v = it.next();
+				if(!visited[v]) {
+					st.push(v);
+					visited[v] = true;
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * Depth first search using recursion
+	 * @param source
+	 * @return
+	 */
+	public List<Integer> DFSRecursion(int source) {
+		List<Integer> result = new ArrayList<>();
+		Boolean[] visited = new Boolean[V];
+		Arrays.fill(visited, false);
+		DFSRecursionHelper(source, visited, result);
+		for(int i=0; i<adjList.length; i++) {
+			if(!visited[i]) {
+				DFSRecursionHelper(i, visited, result);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Helper method for DFSRecursion
+	 * @param source
+	 * @param visited
+	 * @param result
+	 */
+	private void DFSRecursionHelper(int source, Boolean[] visited, List<Integer> result) {
+		visited[source] = true;
+		result.add(source);
+		Iterator<Integer> it = adjList[source].iterator();
 		while(it.hasNext()) {
-			Integer nTemp = it.next();
-			if(!visited[nTemp]) {
-				if(isCyclicUndirected(visited, nTemp, currentNode)) {
-					return true;
-				}
-			}
-			else if(parent != nTemp) {
-				return true;
+			int v = it.next();
+			if(!visited[v]) {
+				DFSRecursionHelper(v, visited, result);
 			}
 		}
-		return false;
 	}
-
-
-	/***************************************
-	****Detect cycle in directed graph****
-	***************************************/
-	// find whether an directed graph has cycle or not
-	public boolean hasCyclesDirected() {
-		String[] visited = new String[numOfVertexes];
-		for(int i=0; i<visited.length; i++) {
-			visited[i] = "white";
+	
+	/**
+	 * Prints a given list
+	 * @param ls
+	 */
+	public void printList(List<Integer> ls) {
+		for(int a: ls) {
+			System.out.print(a + "  ");
 		}
-		for(int i=0; i<numOfVertexes; i++) {
-			if(visited[i].equalsIgnoreCase("white")) {
-				if(isCyclicDirected(visited, i)) {
-					return true;
-				}
-			}
-		}
-		return false;
+		System.out.println();
 	}
-
-	// helper method to detect a cycle in a directed graph
-	private boolean isCyclicDirected(String[] visited, int currentNode) {
-		visited[currentNode] = "grey";
-		LinkedList<Integer> temp = adjacencyList[currentNode];
-		Iterator<Integer> it = temp.iterator();
-		while(it.hasNext()) {
-			int nTemp = it.next();
-			if(visited[nTemp].equalsIgnoreCase("grey")) {
-				return true;
-			}
-			if(visited[nTemp].equalsIgnoreCase("white") && isCyclicDirected(visited, nTemp)) {
-				return true;
-			}
-		}
-		visited[currentNode] = "black";
-		return false;
-
-	}
-
+	
+	/**
+	 * driver method
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		// Graph undirected = new Graph(1,2);
-		// undirected.addUndirectedEdge(2,3,0);
-		// undirected.addUndirectedEdge(3,1,0);
-		// undirected.addUndirectedEdge(3,4,0);
-		// undirected.addUndirectedEdge(4,5,0);
-		// undirected.addUndirectedEdge(6,1,0);
-		// undirected.addUndirectedEdge(7,6,0);
-		// undirected.addUndirectedEdge(7,8,0);
-		// undirected.addUndirectedEdge(8,6,0);
-
-		Graph directed = new Graph(5,8);
-		directed.addDirectedEdge(0,1,0);
-		directed.addDirectedEdge(2,0,0);
-		directed.addDirectedEdge(2,1,0);
-		directed.addDirectedEdge(1,3,0);
-		directed.addDirectedEdge(1,4,0);
-		directed.addDirectedEdge(3,4,0);
-		directed.printAdjacencyList(0);
-		directed.printAdjacencyList(1);
-		directed.printAdjacencyList(2);
-		directed.printAdjacencyList(3);
-		directed.printAdjacencyList(4);
-		//directed.BFS(0);
-		//directed.DFS(0);
-		System.out.println(directed.hasCyclesDirected());
+		System.out.println("*****Undirected Graph******");
+		Graph g = new Graph(8, 9);
+		g.addUndirectedEdge(0, 1);
+		g.addUndirectedEdge(0, 5);
+		g.addUndirectedEdge(1, 2);
+		g.addUndirectedEdge(2, 5);
+		g.addUndirectedEdge(2, 4);
+		g.addUndirectedEdge(2, 3);
+		g.addUndirectedEdge(3, 4);
+		g.addUndirectedEdge(4, 5);
+		g.addUndirectedEdge(7, 6);
+		
+		List<Integer> ls = g.BFS(0);
+		System.out.println("BFS");
+		g.printList(ls);
+		
+		ls = g.DFSStack(0);
+		System.out.println("DFS Stack");
+		g.printList(ls);
+		
+		ls = g.DFSRecursion(0);
+		System.out.println("DFS Recursion");
+		g.printList(ls);
+		
+		System.out.println("*****Directed Graph******");
+		
+		Graph g1 = new Graph(8, 9);
+		g1.addDirectedEdge(0, 1);
+		g1.addDirectedEdge(0, 5);
+		g1.addDirectedEdge(1, 2);
+		g1.addDirectedEdge(2, 5);
+		g1.addDirectedEdge(2, 4);
+		g1.addDirectedEdge(2, 3);
+		g1.addDirectedEdge(3, 4);
+		g1.addDirectedEdge(4, 5);
+		g1.addDirectedEdge(7, 6);
+		
+		List<Integer> ls1 = g1.BFS(0);
+		System.out.println("BFS");
+		g1.printList(ls1);
+		
+		ls1 = g1.DFSStack(0);
+		System.out.println("DFS Stack");
+		g1.printList(ls1);
+		
+		ls1 = g1.DFSRecursion(0);
+		System.out.println("DFS Recursion");
+		g1.printList(ls1);
 	}
 }

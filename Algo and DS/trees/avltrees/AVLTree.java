@@ -271,7 +271,6 @@ public class AVLTree {
 		bst.levelOrder(root, result);
 		bst.printList(result);
 		
-		
 		root = bst.delete(root, 1);
 		root = bst.delete(root, 20);
 		root = bst.delete(root, 5);

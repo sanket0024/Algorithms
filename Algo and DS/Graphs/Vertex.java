@@ -1,12 +1,31 @@
-// used in prim
-class Vertex {
-	public int value;
+/**
+ * Vertex of graph
+ */
+
+/**
+ * @author sanketmathur
+ *
+ */
+public class Vertex {
+
 	public int key;
 	public Vertex parent;
-
-	public Vertex(int value, int key, Vertex parent) {
-		this.value = value;
-		this.key = key;
-		this.parent = parent;
+	public int val;
+	
+	/**
+	 * default constructor
+	 */
+	public Vertex() {
+		
+	}
+	
+	/**
+	 * Parameterized constructor
+	 * @param val
+	 */
+	public Vertex(int val) {
+		this.val = val;
+		parent = null;
+		key = 0;
 	}
 }
