@@ -9,7 +9,6 @@
 public class Vertex {
 
 	public int key;
-	public Vertex parent;
 	public int val;
 	
 	/**
@@ -25,7 +24,6 @@ public class Vertex {
 	 */
 	public Vertex(int val) {
 		this.val = val;
-		parent = null;
 		key = 0;
 	}
 }
