@@ -44,6 +44,7 @@ public class Graph {
 	LinkedList<Integer>[] adjList;
 	Edge[] edges;
 	int edgeCount = 0;
+	int[][] matrix;
 	public Graph(int V, int E) {
 		this.V = V;
 		this.E = E;
@@ -52,6 +53,7 @@ public class Graph {
 			adjList[i] = new LinkedList<>();
 		}
 		edges = new Edge[E];
+		matrix = new int[V][V];
 	}
 	
 	/**
@@ -63,12 +65,14 @@ public class Graph {
 		adjList[u].add(v);
 		edges[edgeCount] = new Edge(u, v, 0);
 		edgeCount++;
+		matrix[u][v] = 1;
 	}
 	
 	public void addDirectedEdge(int u, int v, int weight) {
 		adjList[u].add(v);
 		edges[edgeCount] = new Edge(u, v, weight);
 		edgeCount++;
+		matrix[u][v] = weight;
 	}
 	
 	/**
@@ -81,6 +85,8 @@ public class Graph {
 		adjList[v].add(u);
 		edges[edgeCount] = new Edge(u, v, 0);
 		edgeCount++;
+		matrix[u][v] = 1;
+		matrix[v][u] = 1;
 	}
 	
 	public void addUndirectedEdge(int u, int v, int weight) {
@@ -88,6 +94,8 @@ public class Graph {
 		adjList[v].add(u);
 		edges[edgeCount] = new Edge(u, v, weight);
 		edgeCount++;
+		matrix[u][v] = 1;
+		matrix[v][u] = weight;
 	}
 	
 	/**
