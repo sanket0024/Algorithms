@@ -71,7 +71,7 @@ public class AVLTree {
 		root.right = x;
 		y.left = root;
 		root.height = Math.max(height(root.left), height(root.right)) + 1;
-		y.height = Math.max(height(root.left), height(root.right)) + 1;
+		y.height = Math.max(height(y.left), height(y.right)) + 1;
 		return y;
 	}
 	

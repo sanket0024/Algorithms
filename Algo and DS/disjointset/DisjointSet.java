@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Disjoint set using union by rand and path compression techniques
+ * Disjoint set using union by rank and path compression techniques
  * Supports 3 operations:
  * 1. makeset
  * 2. union
