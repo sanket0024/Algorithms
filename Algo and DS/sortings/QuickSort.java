@@ -48,10 +48,7 @@ public class QuickSort {
 	 */
 	private int partition(int[] nums, int lo, int hi) {
 		Random random = new Random();
-		int r = random.nextInt(hi+1);
-		if(r < lo) {
-			r = (hi-lo)+r;
-		}
+		int r = lo + random.nextInt(hi-lo);
 		swap(nums, r, hi);
 		
 		int pivot = nums[hi];
@@ -95,7 +92,7 @@ public class QuickSort {
 	 */
 	public static void main(String[] args) {
 		QuickSort q = new QuickSort();
-		int[] nums = {11, 10, 9, 8, 7, 6, 5};
+		int[] nums = {11, 10, 9, 8, 7, 6, 5, 2, 4, 3, 7,6,9,0};
 		q.quickSort(nums, 0, nums.length-1);
 		q.printArray(nums);
 	}
