@@ -7,7 +7,8 @@
 
 # mcOS
 # General
-.DS_Store
+./Algo and DS/.DS_Store
+*.DS_Store
 .AppleDouble
 .LSOverride
 Algo and DS/.DS_Store
@@ -53,3 +54,5 @@ Temporary Items
 
 Books
 Other
+*.metadata/
+
